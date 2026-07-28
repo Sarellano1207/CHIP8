@@ -3,7 +3,7 @@
 
 constexpr int CHIP8_WIDTH  = 64;
 constexpr int CHIP8_HEIGHT = 32;
-constexpr int SCALE        = 15;   // 64x32 is tiny; scale it up
+constexpr int SCALE = 15;
 
 int main(int argc, char** argv) {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
