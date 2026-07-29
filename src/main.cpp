@@ -1,11 +1,21 @@
 #include <SDL2/SDL.h>
 #include <cstdio>
+#include "chip8.h"
 
 constexpr int CHIP8_WIDTH  = 64;
 constexpr int CHIP8_HEIGHT = 32;
 constexpr int SCALE = 15;
 
 int main(int argc, char** argv) {
+    std::string path = "/home/man.tech/Desktop/Sam/chip8/roms/1-chip8-logo.ch8";
+    Chip8 test;
+    int result = test.loadROM(path);
+    std::cout << "Result: " << result << std::endl;
+
+    test.debug_dump(0x050, 80);
+    test.debug_dump(0x200, 64);
+
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
         return 1;

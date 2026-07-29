@@ -9,6 +9,7 @@ find_package(SDL2 REQUIRED)
 
 add_executable(chip8
     src/main.cpp
+    src/chip8.cpp
 )
 
 target_include_directories(chip8 PRIVATE ${SDL2_INCLUDE_DIRS})

@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/man.tech/Desktop/Sam/chip8/src/chip8.cpp" "/home/man.tech/Desktop/Sam/chip8/build/CMakeFiles/chip8.dir/src/chip8.cpp.o"
   "/home/man.tech/Desktop/Sam/chip8/src/main.cpp" "/home/man.tech/Desktop/Sam/chip8/build/CMakeFiles/chip8.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

@@ -6,9 +6,25 @@
 
 #IncludeRegexTransform: 
 
+/home/man.tech/Desktop/Sam/chip8/src/chip8.cpp
+chip8.h
+/home/man.tech/Desktop/Sam/chip8/src/chip8.h
+
+/home/man.tech/Desktop/Sam/chip8/src/chip8.h
+cstdint
+-
+string
+-
+iostream
+-
+fstream
+-
+
 /home/man.tech/Desktop/Sam/chip8/src/main.cpp
 SDL2/SDL.h
 -
 cstdio
 -
+chip8.h
+/home/man.tech/Desktop/Sam/chip8/src/chip8.h
 

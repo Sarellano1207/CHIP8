@@ -3,6 +3,9 @@
 #include <iostream>
 #include <fstream>
 
+#ifndef CHIP8_H
+#define CHIP8_H
+
 constexpr unsigned int FONTSET_START_ADDRESS = 0x50;
 constexpr unsigned int FONTSET_SIZE = 80;
 constexpr unsigned int MEMORY_SIZE = 4096;
@@ -45,6 +48,9 @@ private:
     };
 
 public:
-    Chip8() {}
-    void loadROM(const std::string& path);
+    Chip8();
+    int loadROM(const std::string& path);
+    void debug_dump(unsigned int start_pos, unsigned int length);
 };
+
+#endif
