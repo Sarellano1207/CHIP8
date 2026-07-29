@@ -12,5 +12,7 @@ add_executable(chip8
     src/chip8.cpp
 )
 
+target_compile_options(chip8 PRIVATE -Wall -Wextra)
+
 target_include_directories(chip8 PRIVATE ${SDL2_INCLUDE_DIRS})
 target_link_libraries(chip8 PRIVATE ${SDL2_LIBRARIES})

@@ -1,10 +1,10 @@
+#ifndef CHIP8_H
+#define CHIP8_H
+
 #include <cstdint>
 #include <string>
 #include <iostream>
 #include <fstream>
-
-#ifndef CHIP8_H
-#define CHIP8_H
 
 constexpr unsigned int FONTSET_START_ADDRESS = 0x50;
 constexpr unsigned int FONTSET_SIZE = 80;
@@ -14,19 +14,19 @@ constexpr unsigned int SCREEN_HEIGHT = 32;
 constexpr unsigned int ROM_START_ADDRESS = 0x200;
 
 class Chip8 {
+public:
     uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]; // Screen for our CHIP8
-
 private: 
     uint8_t memory[MEMORY_SIZE]{}; // RAM
     uint8_t V[16]{}; // 16 8 bit registers
-    uint8_t index{}; // Index register
-    uint8_t pc{}; // Program counter
-    uint16_t stack[16]; // Program stack
-    uint8_t sp; // Stack pointer
-    uint8_t delayTimer;
-    uint8_t soundTimer;
-    uint16_t opcode; 
-    bool keypad[16];
+    uint16_t index{}; // Index register
+    uint16_t pc{}; // Program counter
+    uint16_t stack[16]{}; // Program stack
+    uint8_t sp{}; // Stack pointer
+    uint8_t delayTimer{};
+    uint8_t soundTimer{};
+    uint16_t opcode{}; 
+    bool keypad[16]{};
 
     uint8_t fonts[FONTSET_SIZE] = {
         0xF0, 0x90, 0x90, 0x90, 0xF0,   // 0

@@ -17,23 +17,20 @@ int Chip8::loadROM(const std::string& path) {
         return -1;
     }
 
-    //If the file is open, check the size and either pass/fail it
-    std::streampos fileSize;
-    uint16_t valid_size;
-    if (inFile.is_open()) {
-        fileSize = inFile.tellg();
-        std::cout << "File size: " << fileSize << " bytes." << std::endl;
-        valid_size = 0x1000 - 0x200;
-        if (fileSize > valid_size) {
-            std::cout << "ROM File is too big!" << std::endl;
-        }
-        else
-            std::cout << "File size is acceptable!" << std::endl;
-        inFile.seekg(0, std::ios::beg);
+    //If the file is open, check the size and either pass/fail it    
+    std::streampos fileSize = inFile.tellg();
+    std::cout << "File size: " << fileSize << " bytes." << std::endl;
+    uint16_t valid_size = MEMORY_SIZE - ROM_START_ADDRESS;
+    if (fileSize > valid_size) {
+        std::cerr << "ROM File is too big!" << std::endl;
+        return -1;
     }
+    else
+        std::cout << "File size is acceptable!" << std::endl;
+    inFile.seekg(0, std::ios::beg);
 
     //Load ROM file into memory 
-    inFile.read(reinterpret_cast<char*>(memory + 0x200), fileSize);
+    inFile.read(reinterpret_cast<char*>(memory + ROM_START_ADDRESS), fileSize);
 
     return 1;
 }

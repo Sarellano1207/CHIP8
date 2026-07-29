@@ -7,7 +7,8 @@ constexpr int CHIP8_HEIGHT = 32;
 constexpr int SCALE = 15;
 
 int main(int argc, char** argv) {
-    std::string path = "/home/man.tech/Desktop/Sam/chip8/roms/1-chip8-logo.ch8";
+    
+    std::string path = "roms/1-chip8-logo.ch8";
     Chip8 test;
     int result = test.loadROM(path);
     std::cout << "Result: " << result << std::endl;
