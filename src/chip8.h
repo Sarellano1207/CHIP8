@@ -14,8 +14,6 @@ constexpr unsigned int SCREEN_HEIGHT = 32;
 constexpr unsigned int ROM_START_ADDRESS = 0x200;
 
 class Chip8 {
-public:
-    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]; // Screen for our CHIP8
 private: 
     uint8_t memory[MEMORY_SIZE]{}; // RAM
     uint8_t V[16]{}; // 16 8 bit registers
@@ -25,7 +23,7 @@ private:
     uint8_t sp{}; // Stack pointer
     uint8_t delayTimer{};
     uint8_t soundTimer{};
-    uint16_t opcode{}; 
+    uint16_t opcode{}; // Instructions for our CHIP8
     bool keypad[16]{};
 
     uint8_t fonts[FONTSET_SIZE] = {
@@ -48,9 +46,10 @@ private:
     };
 
 public:
+    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{}; // Screen for our CHIP8
     Chip8();
     int loadROM(const std::string& path);
-    void debug_dump(unsigned int start_pos, unsigned int length);
+    void debug_dump(unsigned int start_pos, unsigned int length) const;
 };
 
 #endif

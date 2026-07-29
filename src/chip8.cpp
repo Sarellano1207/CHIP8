@@ -4,7 +4,7 @@ Chip8::Chip8() {
     for (unsigned int i = 0; i < FONTSET_SIZE; i++) {
         memory[FONTSET_START_ADDRESS + i] = fonts[i];
     }
-    pc = 0x200;
+    pc = ROM_START_ADDRESS;
 }
 
 int Chip8::loadROM(const std::string& path) {
@@ -20,7 +20,7 @@ int Chip8::loadROM(const std::string& path) {
     //If the file is open, check the size and either pass/fail it    
     std::streampos fileSize = inFile.tellg();
     std::cout << "File size: " << fileSize << " bytes." << std::endl;
-    uint16_t valid_size = MEMORY_SIZE - ROM_START_ADDRESS;
+    unsigned int valid_size = MEMORY_SIZE - ROM_START_ADDRESS;
     if (fileSize > valid_size) {
         std::cerr << "ROM File is too big!" << std::endl;
         return -1;
@@ -35,7 +35,7 @@ int Chip8::loadROM(const std::string& path) {
     return 1;
 }
 
-void Chip8::debug_dump(unsigned int start_pos, unsigned int length) {
+void Chip8::debug_dump(unsigned int start_pos, unsigned int length) const{
     if (start_pos >= MEMORY_SIZE) return;
     if (length > MEMORY_SIZE - start_pos) length = MEMORY_SIZE - start_pos;
 

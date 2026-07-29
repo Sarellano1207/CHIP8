@@ -7,8 +7,19 @@ constexpr int CHIP8_HEIGHT = 32;
 constexpr int SCALE = 15;
 
 int main(int argc, char** argv) {
-    
-    std::string path = "roms/1-chip8-logo.ch8";
+    if (argc < 2) {
+        std::cout << "No File Path Included! Please include a filepath to a ROM file :)\n";
+        return 1;
+    }
+
+    std::string path = argv[1];
+    //std::string path = "roms/1-chip8-logo.ch8";
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        std::cout << "Error: File does not exist or cannot be opened.\n";
+        return 1;
+    }
+
     Chip8 test;
     int result = test.loadROM(path);
     std::cout << "Result: " << result << std::endl;
