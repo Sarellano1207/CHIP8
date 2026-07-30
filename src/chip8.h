@@ -50,6 +50,7 @@ public:
     Chip8();
     int loadROM(const std::string& path);
     void debug_dump(unsigned int start_pos, unsigned int length) const;
+    uint16_t fetch();
 };
 
 #endif

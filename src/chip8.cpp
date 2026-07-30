@@ -46,3 +46,7 @@ void Chip8::debug_dump(unsigned int start_pos, unsigned int length) const{
         if (i % 16 == 15 || i == length - 1) std::printf("\n");
     }
 }
+
+uint16_t Chip8::fetch() {
+     
+}
