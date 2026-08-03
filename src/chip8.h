@@ -23,7 +23,6 @@ private:
     uint8_t sp{}; // Stack pointer
     uint8_t delayTimer{};
     uint8_t soundTimer{};
-    uint16_t opcode{}; // Instructions for our CHIP8
     bool keypad[16]{};
 
     uint8_t fonts[FONTSET_SIZE] = {
@@ -51,6 +50,7 @@ public:
     int loadROM(const std::string& path);
     void debug_dump(unsigned int start_pos, unsigned int length) const;
     uint16_t fetch();
+    void disassemble(uint16_t opcode);
 };
 
 #endif

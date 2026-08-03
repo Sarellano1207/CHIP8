@@ -48,5 +48,12 @@ void Chip8::debug_dump(unsigned int start_pos, unsigned int length) const{
 }
 
 uint16_t Chip8::fetch() {
-     
+    uint16_t opcode = (memory[pc] << 8) | memory[pc + 1];
+    pc += 2;
+    return opcode;
+}
+
+void Chip8::disassemble(uint16_t opcode) {
+    uint8_t first_nibble = (opcode & 0xF000) >> 12;
+
 }

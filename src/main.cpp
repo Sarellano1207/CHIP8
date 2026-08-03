@@ -20,14 +20,20 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    // Testing
     Chip8 test;
     int result = test.loadROM(path);
-    std::cout << "Result: " << result << std::endl;
+    std::cout << "ROM Loaded result: " << result << std::endl;
 
-    test.debug_dump(0x050, 80);
-    test.debug_dump(0x200, 64);
+    for (int i = 0; i < 8; i++) {
+        std::printf("%04X ", test.fetch());
+    }
+
+    uint16_t test_opcode = 0x3C45;
+    test.disassemble(test_opcode);
 
 
+    // SDL Stuff
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
         return 1;
