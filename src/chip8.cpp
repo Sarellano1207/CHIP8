@@ -53,7 +53,43 @@ uint16_t Chip8::fetch() {
     return opcode;
 }
 
-void Chip8::disassemble(uint16_t opcode) {
-    uint8_t first_nibble = (opcode & 0xF000) >> 12;
+uint16_t Chip8::get_pc() {
+    return pc;
+}
 
+void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
+    uint8_t family = (opcode & 0xF000) >> 12;
+    uint8_t  x      = (opcode & 0x0F00) >> 8;   // register index
+    uint8_t  y      = (opcode & 0x00F0) >> 4;   // register index
+    uint8_t  n      =  opcode & 0x000F;         // low nibble
+    uint8_t  kk     =  opcode & 0x00FF;         // low byte
+    uint16_t nnn    =  opcode & 0x0FFF;         // 12-bit address
+    switch (family) {
+        case 0:
+            switch (kk) {
+                case 0xE0: 
+                    std::printf("%04X ", addr);
+                case 0xEE:
+                    break;
+                default:    
+                    break;
+            }
+        /*
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6: 
+        case 7: 
+        case 8:
+        case 9:
+        case 0x0A:
+        case 0x0B:
+        case 0x0C:
+        case 0x0D:
+        case 0x0E:
+        case 0x0F:
+        */
+    }
 }

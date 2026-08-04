@@ -50,7 +50,9 @@ public:
     int loadROM(const std::string& path);
     void debug_dump(unsigned int start_pos, unsigned int length) const;
     uint16_t fetch();
-    void disassemble(uint16_t opcode);
+    uint16_t get_pc();
+
+    void disassemble(uint16_t opcode, uint16_t addr);
 };
 
 #endif

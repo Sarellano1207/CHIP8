@@ -25,12 +25,8 @@ int main(int argc, char** argv) {
     int result = test.loadROM(path);
     std::cout << "ROM Loaded result: " << result << std::endl;
 
-    for (int i = 0; i < 8; i++) {
-        std::printf("%04X ", test.fetch());
-    }
-
-    uint16_t test_opcode = 0x3C45;
-    test.disassemble(test_opcode);
+    uint16_t test_opcode = 0x00E0;
+    test.disassemble(test_opcode, test.get_pc());
 
 
     // SDL Stuff
