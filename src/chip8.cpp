@@ -53,6 +53,7 @@ uint16_t Chip8::fetch() {
     return opcode;
 }
 
+// Remove at some point, it is only here for testing purposes
 uint16_t Chip8::get_pc() {
     return pc;
 }
@@ -64,32 +65,54 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
     uint8_t  n      =  opcode & 0x000F;         // low nibble
     uint8_t  kk     =  opcode & 0x00FF;         // low byte
     uint16_t nnn    =  opcode & 0x0FFF;         // 12-bit address
+
     switch (family) {
         case 0:
             switch (kk) {
                 case 0xE0: 
-                    std::printf("%04X ", addr);
+                    std::printf("Ox%04X  %04X    CLS\n", addr, opcode);
+                    break;
                 case 0xEE:
+                    std::printf("Ox%04X  %04X    RET\n", addr, opcode);
                     break;
                 default:    
+                    std::printf("???\n");
                     break;
             }
-        /*
+        
         case 1:
+            std::printf("Ox%04X  %04X    JP   %03X\n", addr, opcode, nnn);
+            break;
         case 2:
+            std::printf("Ox%04X  %04X    CALL   %03X\n", addr, opcode, nnn);
+            break;
         case 3:
+            std::printf("Ox%04X  %04X    SE   %04X\n", addr, opcode, nnn);
+            break;
         case 4:
+            break;
         case 5:
-        case 6: 
+            break;
+        case 6:
+            std::printf("Ox%04X  %04X    LD   V%x, Ox%04X\n", addr, opcode, x, kk);
+            break;
         case 7: 
+            break;
         case 8:
+            break;
         case 9:
+            break;
         case 0x0A:
+            break;
         case 0x0B:
+            break;
         case 0x0C:
+            break;
         case 0x0D:
+            break;
         case 0x0E:
+            break;
         case 0x0F:
-        */
+            break;
     }
 }

@@ -25,8 +25,16 @@ int main(int argc, char** argv) {
     int result = test.loadROM(path);
     std::cout << "ROM Loaded result: " << result << std::endl;
 
-    uint16_t test_opcode = 0x00E0;
-    test.disassemble(test_opcode, test.get_pc());
+    // Debug Dump first
+    test.debug_dump(0x200, 32);
+
+    // Test disassemble
+    for (unsigned int i = 0; i < 32; i++) {
+        uint16_t pc_before_fetch = test.get_pc();
+        uint16_t opcode = test.fetch();
+        // call disassemble
+        test.disassemble(opcode, pc_before_fetch);
+    }
 
 
     // SDL Stuff
