@@ -70,49 +70,122 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
         case 0:
             switch (kk) {
                 case 0xE0: 
-                    std::printf("Ox%04X  %04X    CLS\n", addr, opcode);
+                    std::printf("0x%04X  0x%04X    CLS\n", addr, opcode);
                     break;
                 case 0xEE:
-                    std::printf("Ox%04X  %04X    RET\n", addr, opcode);
+                    std::printf("0x%04X  0x%04X    RET\n", addr, opcode);
                     break;
                 default:    
                     std::printf("???\n");
                     break;
             }
+            break;
         
         case 1:
-            std::printf("Ox%04X  %04X    JP   %03X\n", addr, opcode, nnn);
+            std::printf("0x%04X  0x%04X    JP       0x%04X\n", addr, opcode, nnn);
             break;
         case 2:
-            std::printf("Ox%04X  %04X    CALL   %03X\n", addr, opcode, nnn);
+            std::printf("0x%04X  0x%04X    CALL     0x%04X\n", addr, opcode, nnn);
             break;
         case 3:
-            std::printf("Ox%04X  %04X    SE   %04X\n", addr, opcode, nnn);
+            std::printf("0x%04X  0x%04X    SE       V%X, 0x%04X\n", addr, opcode, x, kk);
             break;
         case 4:
+            std::printf("0x%04X  0x%04X    SNE      V%X, 0x%04X\n", addr, opcode, x, kk);
             break;
         case 5:
+            std::printf("0x%04X  0x%04X    SE       V%X, V%X\n", addr, opcode, x, y);
             break;
         case 6:
-            std::printf("Ox%04X  %04X    LD   V%x, Ox%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    LD       V%X, 0x%04X\n", addr, opcode, x, kk);
             break;
         case 7: 
+            std::printf("0x%04X  0x%04X    ADD      V%X, 0x%04X\n", addr, opcode, x, kk);
             break;
         case 8:
+            switch(n) {
+                case 0x0:
+                    std::printf("0x%04X  0x%04X    LD       V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x1:
+                    std::printf("0x%04X  0x%04X    OR       V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x2:
+                    std::printf("0x%04X  0x%04X    AND      V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x3:
+                    std::printf("0x%04X  0x%04X    XOR      V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x4:
+                    std::printf("0x%04X  0x%04X    ADD      V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x5:
+                    std::printf("0x%04X  0x%04X    SUB      V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x6:
+                    std::printf("0x%04X  0x%04X    SHR >>  V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0x7:
+                    std::printf("0x%04X  0x%04X    SUBN    V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                case 0xE:
+                    std::printf("0x%04X  0x%04X    SHL <<  V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                default:
+                    std::printf("???\n");
+                
+            }
             break;
+
         case 9:
+            std::printf("0x%04X  0x%04X    SNE      V%X, V%X\n", addr, opcode, x, y);
             break;
         case 0x0A:
+            std::printf("0x%04X  0x%04X    LD       I, 0x%04X\n", addr, opcode, index);
             break;
         case 0x0B:
+            std::printf("0x%04X  0x%04X    JP       V%X, 0x%04X\n", addr, opcode, x, nnn);
             break;
         case 0x0C:
+            std::printf("0x%04X  0x%04X    RND      V%X, 0x%04X\n", addr, opcode, x, kk);
             break;
         case 0x0D:
+            std::printf("0x%04X  0x%04X    DRW      V%X, V%X, 0x%04X\n", addr, opcode, x, y, n);
             break;
         case 0x0E:
+            switch (kk) {
+                case 0x9E:
+                    std::printf("0x%04X  0x%04X    SKP      V%X\n", addr, opcode, x);
+                    break;
+                case 0xA1:
+                    std::printf("0x%04X  0x%04X    SKNP     V%X\n", addr, opcode, x);
+                    break;
+            }
             break;
         case 0x0F:
+            switch (kk) {
+                case 0x07:
+                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%02X\n", addr, opcode, delayTimer);
+                    break;
+                case 0x0A:
+                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%02X\n", addr, opcode, keypad);
+                    break;
+                case 0x15:
+                    std::printf("0x%04X  0x%04X    LD       %u, V%X\n", addr, opcode, delayTimer);
+                    break;
+                case 0x18:
+                    break;
+                case 0x1E:
+                    break;
+                case 0x29:
+                    break;
+                case 0x33:
+                    break;
+                case 0x55:
+                    break;
+                case 0x65:
+                    break;   
+            }
             break;
     }
 }

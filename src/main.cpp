@@ -37,6 +37,25 @@ int main(int argc, char** argv) {
     }
 
 
+    // Synthetic tests: families 1 through A
+    std::cout << "\nSythethic Testing...\n";
+    uint16_t f_family_tests[] = {
+        0xF107,   // FX07  LD V1, DT
+        0xF20A,   // FX0A  LD V2, K       (blocking key wait)
+        0xF315,   // FX15  LD DT, V3
+        0xF418,   // FX18  LD ST, V4
+        0xF51E,   // FX1E  ADD I, V5
+        0xF629,   // FX29  LD F, V6
+        0xF733,   // FX33  LD B, V7
+        0xF855,   // FX55  LD [I], V8
+        0xF965    // FX65  LD V9, [I]
+    };
+
+    uint16_t fx_pc = 0x400;
+    for (uint16_t opcode : f_family_tests) {
+        test.disassemble(opcode, fx_pc);
+        fx_pc += 2;
+    }
     // SDL Stuff
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
