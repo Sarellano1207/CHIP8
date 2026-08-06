@@ -168,14 +168,16 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
                     std::printf("0x%04X  0x%04X    LD       V%X, 0x%02X\n", addr, opcode, x, delayTimer);
                     break;
                 case 0x0A:
-                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%s\n", addr, opcode, x, keypad);
+                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%d\n", addr, opcode, x, keypad);
                     break;
                 case 0x15:
                     std::printf("0x%04X  0x%04X    LD       %u, V%X\n", addr, opcode, delayTimer, x);
                     break;
                 case 0x18:
+                    std::printf("0x%04X  0x%04X    LD       %u, V%X\n", addr, opcode, soundTimer, x);
                     break;
                 case 0x1E:
+                    std::printf("0x%04X  0x%04X    ADD      0x%02X, V%X\n", addr, opcode, soundTimer, x);
                     break;
                 case 0x29:
                     break;
