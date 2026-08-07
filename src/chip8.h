@@ -44,8 +44,11 @@ private:
         0xF0, 0x80, 0xF0, 0x80, 0x80    // F
     };
 
+    private:
+        void execute(uint16_t opcode);
+
 public:
-    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{}; // Screen for our CHIP8
+    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{1}; // Screen for our CHIP8
 
     Chip8();
 
@@ -60,6 +63,10 @@ public:
     void disassemble(uint16_t opcode, uint16_t addr);
 
     void disassemble_range(uint16_t start, uint16_t end);
+
+    void cycle();
+
+    void testscreen();
 };
 
 #endif

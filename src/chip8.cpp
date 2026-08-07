@@ -219,8 +219,144 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
 
 void Chip8::disassemble_range(uint16_t start, uint16_t end) {
     for (uint16_t addr = start; addr < end; addr += 2) {
-        uint16_t opcode = (memory[addr] << 8) | m
-        emory[addr + 1];
+        uint16_t opcode = (memory[addr] << 8) | memory[addr + 1];
         disassemble(opcode, addr);
     }   
+}
+
+void Chip8::execute(uint16_t opcode) {
+    uint8_t family  = (opcode & 0xF000) >> 12;
+    uint8_t  x      = (opcode & 0x0F00) >> 8;   // register index
+    uint8_t  y      = (opcode & 0x00F0) >> 4;   // register index
+    uint8_t  n      =  opcode & 0x000F;         // low nibble
+    uint8_t  kk     =  opcode & 0x00FF;         // low byte
+    uint16_t nnn    =  opcode & 0x0FFF;         // 12-bit address
+
+    switch (family) {
+        case 0:
+            switch (kk) {
+                case 0xE0:
+                    for (unsigned int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++)
+                        display[i] = 0;
+                    break;
+                case 0xEE:
+                    break;
+                default:    
+                    break;
+            }
+            break;
+        
+        case 1:
+            pc = nnn;
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            switch(n){
+                case 0x0:
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 6:
+            V[x] = kk;
+            break;
+        case 7: 
+            V[x] += kk;
+            break;
+        case 8:
+            switch(n) {
+                case 0x0:
+                    break;
+                case 0x1:
+                    break;
+                case 0x2:
+                    break;
+                case 0x3:
+                    break;
+                case 0x4:
+                    break;
+                case 0x5:
+                    break;
+                case 0x6:
+                    break;
+                case 0x7:
+                    break;
+                case 0xE:
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+        case 9:
+            switch(n) {
+                case 0x0:
+                    break;
+                default:
+                    break;
+                }
+            break;
+        case 0x0A:
+            index = nnn;
+            break;
+        case 0x0B:
+            break;
+        case 0x0C:
+            break;
+        case 0x0D:
+            break;
+        case 0x0E:
+            switch (kk) {
+                case 0x9E:
+                    break;
+                case 0xA1:
+                    break;
+                default:    
+                    break;
+            }
+            break;
+        case 0x0F:
+            switch (kk) {
+                case 0x07:
+                    break;
+                case 0x0A:
+                    break;
+                case 0x15:
+                    break;
+                case 0x18:
+                    break;
+                case 0x1E:
+                    break;
+                case 0x29:
+                    break;
+                case 0x33:
+                    break;
+                case 0x55:
+                    break;
+                case 0x65:
+                    break;   
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Chip8::cycle() {
+    uint16_t opcode = fetch();
+    execute(opcode);
+}
+
+void Chip8::testscreen() {
+    for (int i = 0; i < 127; i++) {
+        display[i] = 1;
+    }
 }
