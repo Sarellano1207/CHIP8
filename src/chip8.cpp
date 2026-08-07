@@ -32,7 +32,7 @@ int Chip8::loadROM(const std::string& path) {
     //Load ROM file into memory 
     inFile.read(reinterpret_cast<char*>(memory + ROM_START_ADDRESS), fileSize);
 
-    return 1;
+    return fileSize;
 }
 
 void Chip8::debug_dump(unsigned int start_pos, unsigned int length) const{
@@ -76,31 +76,38 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
                     std::printf("0x%04X  0x%04X    RET\n", addr, opcode);
                     break;
                 default:    
-                    std::printf("???\n");
+                    std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
                     break;
             }
             break;
         
         case 1:
-            std::printf("0x%04X  0x%04X    JP       0x%04X\n", addr, opcode, nnn);
+            std::printf("0x%04X  0x%04X    JP       0x%03X\n", addr, opcode, nnn);
             break;
         case 2:
-            std::printf("0x%04X  0x%04X    CALL     0x%04X\n", addr, opcode, nnn);
+            std::printf("0x%04X  0x%04X    CALL     0x%03X\n", addr, opcode, nnn);
             break;
         case 3:
-            std::printf("0x%04X  0x%04X    SE       V%X, 0x%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    SE       V%X, 0x%02X\n", addr, opcode, x, kk);
             break;
         case 4:
-            std::printf("0x%04X  0x%04X    SNE      V%X, 0x%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    SNE      V%X, 0x%02X\n", addr, opcode, x, kk);
             break;
         case 5:
-            std::printf("0x%04X  0x%04X    SE       V%X, V%X\n", addr, opcode, x, y);
+            switch(n){
+                case 0x0:
+                    std::printf("0x%04X  0x%04X    SE       V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                default:
+                    std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
+                    break;
+            }
             break;
         case 6:
-            std::printf("0x%04X  0x%04X    LD       V%X, 0x%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    LD       V%X, 0x%02X\n", addr, opcode, x, kk);
             break;
         case 7: 
-            std::printf("0x%04X  0x%04X    ADD      V%X, 0x%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    ADD      V%X, 0x%02X\n", addr, opcode, x, kk);
             break;
         case 8:
             switch(n) {
@@ -123,34 +130,40 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
                     std::printf("0x%04X  0x%04X    SUB      V%X, V%X\n", addr, opcode, x, y);
                     break;
                 case 0x6:
-                    std::printf("0x%04X  0x%04X    SHR >>  V%X, V%X\n", addr, opcode, x, y);
+                    std::printf("0x%04X  0x%04X    SHR >>   V%X, V%X\n", addr, opcode, x, y);
                     break;
                 case 0x7:
-                    std::printf("0x%04X  0x%04X    SUBN    V%X, V%X\n", addr, opcode, x, y);
+                    std::printf("0x%04X  0x%04X    SUBN     V%X, V%X\n", addr, opcode, x, y);
                     break;
                 case 0xE:
-                    std::printf("0x%04X  0x%04X    SHL <<  V%X, V%X\n", addr, opcode, x, y);
+                    std::printf("0x%04X  0x%04X    SHL <<   V%X, V%X\n", addr, opcode, x, y);
                     break;
                 default:
-                    std::printf("???\n");
+                    std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
                 
             }
             break;
 
         case 9:
-            std::printf("0x%04X  0x%04X    SNE      V%X, V%X\n", addr, opcode, x, y);
+            switch(n) {
+                case 0x0:
+                    std::printf("0x%04X  0x%04X    SNE      V%X, V%X\n", addr, opcode, x, y);
+                    break;
+                default:
+                    std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
+                }
             break;
         case 0x0A:
-            std::printf("0x%04X  0x%04X    LD       I, 0x%04X\n", addr, opcode, index);
+            std::printf("0x%04X  0x%04X    LD       I, 0x%03X\n", addr, opcode, nnn);
             break;
         case 0x0B:
-            std::printf("0x%04X  0x%04X    JP       V%X, 0x%04X\n", addr, opcode, x, nnn);
+            std::printf("0x%04X  0x%04X    JP       V0, 0x%03X\n", addr, opcode, nnn);
             break;
         case 0x0C:
-            std::printf("0x%04X  0x%04X    RND      V%X, 0x%04X\n", addr, opcode, x, kk);
+            std::printf("0x%04X  0x%04X    RND      V%X, 0x%03X\n", addr, opcode, x, nnn);
             break;
         case 0x0D:
-            std::printf("0x%04X  0x%04X    DRW      V%X, V%X, 0x%04X\n", addr, opcode, x, y, n);
+            std::printf("0x%04X  0x%04X    DRW      V%X, V%X, 0x%02X\n", addr, opcode, x, y, n);
             break;
         case 0x0E:
             switch (kk) {
@@ -160,34 +173,53 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
                 case 0xA1:
                     std::printf("0x%04X  0x%04X    SKNP     V%X\n", addr, opcode, x);
                     break;
+                default:
+                std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
             }
             break;
         case 0x0F:
             switch (kk) {
                 case 0x07:
-                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%02X\n", addr, opcode, x, delayTimer);
+                    std::printf("0x%04X  0x%04X    LD       V%X, DT\n", addr, opcode, x);
                     break;
                 case 0x0A:
-                    std::printf("0x%04X  0x%04X    LD       V%X, 0x%d\n", addr, opcode, x, keypad);
+                    std::printf("0x%04X  0x%04X    LD       V%X, K\n", addr, opcode, x);
                     break;
                 case 0x15:
-                    std::printf("0x%04X  0x%04X    LD       %u, V%X\n", addr, opcode, delayTimer, x);
+                    std::printf("0x%04X  0x%04X    LD       DT, V%X\n", addr, opcode, x);
                     break;
                 case 0x18:
-                    std::printf("0x%04X  0x%04X    LD       %u, V%X\n", addr, opcode, soundTimer, x);
+                    std::printf("0x%04X  0x%04X    LD       ST, V%X\n", addr, opcode, x);
                     break;
                 case 0x1E:
-                    std::printf("0x%04X  0x%04X    ADD      0x%02X, V%X\n", addr, opcode, soundTimer, x);
+                    std::printf("0x%04X  0x%04X    ADD      I, V%X\n", addr, opcode, x);
                     break;
                 case 0x29:
+                    std::printf("0x%04X  0x%04X    LD       F, V%X\n", addr, opcode, x);
                     break;
                 case 0x33:
+                    std::printf("0x%04X  0x%04X    LD       B, V%X\n", addr, opcode, x);
                     break;
                 case 0x55:
+                    std::printf("0x%04X  0x%04X    LD       [I], V%X\n", addr, opcode, x);
                     break;
                 case 0x65:
+                    std::printf("0x%04X  0x%04X    LD       V%X, [I]\n", addr, opcode, x);
                     break;   
+                default:
+                    std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
+
+
             }
             break;
+        default:
+            std::printf("0x%04X  0x%04X    ???\n", addr, opcode);
     }
+}
+
+void Chip8::disassemble_range(uint16_t start, uint16_t end) {
+    for (uint16_t addr = start; addr < end; addr += 2) {
+        uint16_t opcode = (memory[addr] << 8) | memory[addr + 1];
+        disassemble(opcode, addr);
+    }   
 }

@@ -22,40 +22,23 @@ int main(int argc, char** argv) {
 
     // Testing
     Chip8 test;
-    int result = test.loadROM(path);
-    std::cout << "ROM Loaded result: " << result << std::endl;
+    int load_rom_result = test.loadROM(path);
+    std::cout << "ROM Loaded result: " << load_rom_result << std::endl;
 
     // Debug Dump first
-    test.debug_dump(0x200, 32);
+    test.debug_dump(0x200, load_rom_result);
 
     // Test disassemble
-    for (unsigned int i = 0; i < 32; i++) {
+    for (int i = 0; i < load_rom_result / 2; i++) {
         uint16_t pc_before_fetch = test.get_pc();
         uint16_t opcode = test.fetch();
-        // call disassemble
         test.disassemble(opcode, pc_before_fetch);
-    }
+    }   
 
+    std::cout << "\n\nPrinting Over Range\n\n";
+    
+    test.disassemble_range(0x200, 0x200 + load_rom_result);
 
-    // Synthetic tests: families 1 through A
-    std::cout << "\nSythethic Testing...\n";
-    uint16_t f_family_tests[] = {
-        0xF107,   // FX07  LD V1, DT
-        0xF20A,   // FX0A  LD V2, K       (blocking key wait)
-        0xF315,   // FX15  LD DT, V3
-        0xF418,   // FX18  LD ST, V4
-        0xF51E,   // FX1E  ADD I, V5
-        0xF629,   // FX29  LD F, V6
-        0xF733,   // FX33  LD B, V7
-        0xF855,   // FX55  LD [I], V8
-        0xF965    // FX65  LD V9, [I]
-    };
-
-    uint16_t fx_pc = 0x400;
-    for (uint16_t opcode : f_family_tests) {
-        test.disassemble(opcode, fx_pc);
-        fx_pc += 2;
-    }
     // SDL Stuff
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());

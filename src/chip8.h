@@ -46,13 +46,20 @@ private:
 
 public:
     uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{}; // Screen for our CHIP8
+
     Chip8();
+
     int loadROM(const std::string& path);
+
     void debug_dump(unsigned int start_pos, unsigned int length) const;
+
     uint16_t fetch();
+
     uint16_t get_pc();
 
     void disassemble(uint16_t opcode, uint16_t addr);
+
+    void disassemble_range(uint16_t start, uint16_t end);
 };
 
 #endif
