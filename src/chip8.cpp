@@ -219,7 +219,8 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
 
 void Chip8::disassemble_range(uint16_t start, uint16_t end) {
     for (uint16_t addr = start; addr < end; addr += 2) {
-        uint16_t opcode = (memory[addr] << 8) | memory[addr + 1];
+        uint16_t opcode = (memory[addr] << 8) | m
+        emory[addr + 1];
         disassemble(opcode, addr);
     }   
 }
