@@ -5,7 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(SDL2 REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 5.5
+)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(raylib)
 
 add_executable(chip8
     src/main.cpp
@@ -13,6 +20,4 @@ add_executable(chip8
 )
 
 target_compile_options(chip8 PRIVATE -Wall -Wextra)
-
-target_include_directories(chip8 PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(chip8 PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(chip8 PRIVATE raylib)
