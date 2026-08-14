@@ -45,6 +45,7 @@ int main(int argc, char** argv) {
             test.display[i] = 1;
     }
     // Raylib Stuff
+    SetTraceLogLevel(LOG_ERROR); 
     InitWindow(CHIP8_WIDTH * SCALE, CHIP8_HEIGHT * SCALE, "Raylib Example");
 
     while (!WindowShouldClose())
