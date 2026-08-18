@@ -2,6 +2,7 @@
 #include <cstdio>
 #include "chip8.h"
 #include "raylib.h"
+#include "display.h"
 
 constexpr int CHIP8_WIDTH  = 64;
 constexpr int CHIP8_HEIGHT = 32;

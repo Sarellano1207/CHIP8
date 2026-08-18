@@ -17,6 +17,7 @@ FetchContent_MakeAvailable(raylib)
 add_executable(chip8
     src/main.cpp
     src/chip8.cpp
+    src/display.cpp
 )
 
 target_compile_options(chip8 PRIVATE -Wall -Wextra)
