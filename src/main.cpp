@@ -1,4 +1,3 @@
-#include <SDL2/SDL.h>
 #include <cstdio>
 #include "chip8.h"
 #include "raylib.h"
@@ -46,24 +45,15 @@ int main(int argc, char** argv) {
             test.display[i] = 1;
     }
     // Raylib Stuff
-    SetTraceLogLevel(LOG_ERROR); 
-    InitWindow(CHIP8_WIDTH * SCALE, CHIP8_HEIGHT * SCALE, "Raylib Example");
+    Display screen(CHIP8_WIDTH, CHIP8_HEIGHT, SCALE, test.display);
+    screen.init("CHIP-8");
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-            ClearBackground(BLACK);
-            for (unsigned int i = 0; i < CHIP8_WIDTH * CHIP8_HEIGHT; i++) {                
-                if (test.display[i] > 0) {
-                    unsigned int row = i / CHIP8_WIDTH;
-                    unsigned int col = i % CHIP8_WIDTH;
-                    DrawRectangle(col * SCALE, row * SCALE, SCALE, SCALE, WHITE);     
-                }
-            }
-        EndDrawing();
+    while (!screen.should_close()) {
+        // test.cycle();   // uncomment once execute() exists
+        screen.render();
     }
-    
+   
+        
 
-    CloseWindow();
     return 0;
 }

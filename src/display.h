@@ -13,6 +13,12 @@ private:
 
 public:
     Display(int width, int height, int scale, uint8_t display[]);
+    ~Display();                        
+
+    void init(const char* title);      
+    bool should_close();               
+    void render();          
+    
 };
 
 #endif
