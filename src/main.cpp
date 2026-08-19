@@ -12,14 +12,9 @@ int main(int argc, char** argv) {
         std::cout << "No File Path Included! Please include a filepath to a ROM file :)\n";
         return 1;
     }
-
+    
+    // Get the path from cli
     std::string path = argv[1];
-    //std::string path = "roms/1-chip8-logo.ch8";
-    std::ifstream file(path);
-    if (!file.is_open()) {
-        std::cout << "Error: File does not exist or cannot be opened.\n";
-        return 1;
-    }
 
     // Testing
     Chip8 test;
@@ -27,29 +22,36 @@ int main(int argc, char** argv) {
     std::cout << "ROM Loaded result: " << load_rom_result << std::endl;
 
     // Debug Dump first
-    test.debug_dump(0x200, load_rom_result);
+    //test.debug_dump(0x200, load_rom_result);
 
     // Test disassemble
+    /*
     for (int i = 0; i < load_rom_result / 2; i++) {
         uint16_t pc_before_fetch = test.get_pc();
         uint16_t opcode = test.fetch();
         test.disassemble(opcode, pc_before_fetch);
     }   
+    */
 
     std::cout << "\n\nPrinting Over Range\n\n";
     
+    // Test disassemble over a certain range
+    // Currently, the output from the test disassmle from above should produce the same output
+    /*
     test.disassemble_range(0x200, 0x200 + load_rom_result);
 
     for (unsigned int i = 0; i < CHIP8_WIDTH * CHIP8_HEIGHT; i++) {
         if (i % 2 == 0)
             test.display[i] = 1;
     }
+    */
     // Raylib Stuff
+
     Display screen(CHIP8_WIDTH, CHIP8_HEIGHT, SCALE, test.display);
     screen.init("CHIP-8");
 
     while (!screen.should_close()) {
-        // test.cycle();   // uncomment once execute() exists
+        test.cycle();   
         screen.render();
     }
    

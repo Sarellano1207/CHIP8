@@ -66,7 +66,6 @@ public:
 
     void cycle();
 
-    void testscreen();
 };
 
 #endif

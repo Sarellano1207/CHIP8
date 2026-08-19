@@ -309,8 +309,31 @@ void Chip8::execute(uint16_t opcode) {
             break;
         case 0x0C:
             break;
-        case 0x0D:
-            break;
+        case 0xD: {                              
+            uint8_t start_x = V[x] % SCREEN_WIDTH;
+            uint8_t start_y = V[y] % SCREEN_HEIGHT;
+            V[0xF] = 0;
+
+            for (int row = 0; row < n; row++) {
+                uint8_t sprite_byte = memory[index + row];
+                unsigned int py = start_y + row;
+                if (py >= SCREEN_HEIGHT) break;          // clip bottom
+
+                for (int col = 0; col < 8; col++) {
+                    unsigned int px = start_x + col;
+                    if (px >= SCREEN_WIDTH) break;       // clip right
+
+                    uint8_t sprite_pixel = sprite_byte & (0x80 >> col);
+                    if (sprite_pixel) {
+                        int idx = py * SCREEN_WIDTH + px;
+                        if (display[idx] == 1)
+                            V[0xF] = 1;   // collision
+                        display[idx] ^= 1;                   // XOR toggle
+                    }
+                }
+            }
+    break;
+}
         case 0x0E:
             switch (kk) {
                 case 0x9E:
@@ -353,10 +376,4 @@ void Chip8::execute(uint16_t opcode) {
 void Chip8::cycle() {
     uint16_t opcode = fetch();
     execute(opcode);
-}
-
-void Chip8::testscreen() {
-    for (int i = 0; i < 127; i++) {
-        display[i] = 1;
-    }
 }

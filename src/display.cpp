@@ -28,7 +28,7 @@ void Display::render() {
         if (display[i] > 0) {
             int row = i / width;
             int col = i % width;
-            DrawRectangle(col * scale, row * scale, scale, scale, WHITE);
+            DrawRectangle(col * scale, row * scale, scale, scale, BLUE);
         }
     }
 
