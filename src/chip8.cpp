@@ -240,6 +240,8 @@ void Chip8::execute(uint16_t opcode) {
                         display[i] = 0;
                     break;
                 case 0xEE:
+                    pc = stack[sp];
+                    sp--;
                     break;
                 default:    
                     break;
@@ -250,14 +252,23 @@ void Chip8::execute(uint16_t opcode) {
             pc = nnn;
             break;
         case 2:
+            sp += 1;
+            stack[sp] = pc;
+            pc = nnn;
             break;
         case 3:
+            if (V[x] == kk)
+                pc += 2;
             break;
         case 4:
+            if (V[x] != kk)
+                pc += 2;
             break;
         case 5:
             switch(n){
                 case 0x0:
+                    if (V[x] == V[y])
+                        pc += 2;
                     break;
                 default:
                     break;
@@ -272,16 +283,24 @@ void Chip8::execute(uint16_t opcode) {
         case 8:
             switch(n) {
                 case 0x0:
+                    V[x] = V[y];
                     break;
                 case 0x1:
+                    V[x] |= V[y];
                     break;
                 case 0x2:
+                    V[x] &= V[y];
                     break;
                 case 0x3:
+                    V[x] ^= V[y];
                     break;
                 case 0x4:
+                    V[x] += V[y];
+                    V[0xF] = 1;
                     break;
                 case 0x5:
+                    V[x] -= V[y];
+                    V[0xF] = 0;
                     break;
                 case 0x6:
                     break;
