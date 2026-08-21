@@ -1,4 +1,5 @@
 #include "chip8.h"
+#include <ctime> 
 
 Chip8::Chip8() {
     for (unsigned int i = 0; i < FONTSET_SIZE; i++) {
@@ -250,7 +251,7 @@ void Chip8::execute(uint16_t opcode) {
         
         case 1:
             pc = nnn;
-            break;
+            break;  
         case 2:
             sp += 1;
             stack[sp] = pc;
@@ -294,20 +295,34 @@ void Chip8::execute(uint16_t opcode) {
                 case 0x3:
                     V[x] ^= V[y];
                     break;
-                case 0x4:
+                case 0x4: {
+                    uint8_t borrow = (V[x] + V[y] > 255) ? 1 : 0;
                     V[x] += V[y];
-                    V[0xF] = 1;
+                    V[0xF] = borrow;
                     break;
-                case 0x5:
-                    V[x] -= V[y];
-                    V[0xF] = 0;
+                }
+                case 0x5: {
+                    uint8_t borrow = (V[x] >= V[y]) ? 1 : 0;
+                    V[x] = V[x] - V[y];
+                    V[0xF] = borrow; // Must be set after the subtraction
                     break;
-                case 0x6:
+                }
+                case 0x6: {
+                    uint8_t borrow = (V[x] & 1) ? 1 : 0;
+                    V[x] /= 2; 
+                    V[0xF] = borrow;
                     break;
+                }
                 case 0x7:
+                    V[x] = V[y] - V[x];
+                    V[0xF] = (V[y] > V[x]) ? 1 : 0;
                     break;
-                case 0xE:
+                case 0xE: {
+                    uint8_t borrow = (V[x] & 0x80) ? 1 : 0;
+                    V[x] *= 2;
+                    V[0xF] = borrow;;
                     break;
+                }
                 default:
                     break;
             }
@@ -316,6 +331,8 @@ void Chip8::execute(uint16_t opcode) {
         case 9:
             switch(n) {
                 case 0x0:
+                    if (V[x] != V[y])
+                        pc += 2;
                     break;
                 default:
                     break;
@@ -325,9 +342,14 @@ void Chip8::execute(uint16_t opcode) {
             index = nnn;
             break;
         case 0x0B:
+            pc = nnn + V[0];
             break;
-        case 0x0C:
+        case 0x0C: {
+            std::srand(static_cast<unsigned int>(std::time(nullptr))); 
+            uint16_t random_num = std::rand() % 256; 
+            V[x] = kk & random_num;
             break;
+        }
         case 0xD: {                              
             uint8_t start_x = V[x] % SCREEN_WIDTH;
             uint8_t start_y = V[y] % SCREEN_HEIGHT;
@@ -356,8 +378,12 @@ void Chip8::execute(uint16_t opcode) {
         case 0x0E:
             switch (kk) {
                 case 0x9E:
+                    if (keypad[V[x]] == true)
+                        pc += 2;
                     break;
                 case 0xA1:
+                    if (keypad[V[x]] == false)
+                        pc += 2;
                     break;
                 default:    
                     break;
@@ -366,22 +392,47 @@ void Chip8::execute(uint16_t opcode) {
         case 0x0F:
             switch (kk) {
                 case 0x07:
+                    V[x] = delayTimer;
                     break;
-                case 0x0A:
+                case 0x0A: {
+                    bool found = false;
+                    for (int i = 0; i < 16; i++) {
+                        if (keypad[i]) {
+                            V[x] = i;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) pc -= 2;             
+                        break;
                     break;
+                }
                 case 0x15:
+                    delayTimer = V[x];
                     break;
                 case 0x18:
+                    soundTimer = V[x];
                     break;
                 case 0x1E:
+                    index += V[x];
                     break;
                 case 0x29:
+                    index = memory[FONTSET_START_ADDRESS + (V[x] * 5)];
                     break;
                 case 0x33:
+                    memory[index] = V[x] % 10; 
+                    memory[index + 1] = (V[x] / 10) % 10;
+                    memory[index + 2]  = V[x] / 100;
                     break;
                 case 0x55:
+                    for (int i = 0; i <= x; i++) {
+                        memory[index + i] = V[i];
+                    }
                     break;
                 case 0x65:
+                    for (int i = 0; i <= x; i++) {
+                        V[i] = memory[index + i];
+                    }
                     break;   
                 default:
                     break;
