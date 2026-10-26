@@ -3,8 +3,6 @@
 
 #include <cstdint>
 #include <string>
-#include <iostream>
-#include <fstream>
 
 constexpr unsigned int FONTSET_START_ADDRESS = 0x50;
 constexpr unsigned int FONTSET_SIZE = 80;
@@ -48,7 +46,7 @@ private:
         void execute(uint16_t opcode);
 
 public:
-    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{1}; // Screen for our CHIP8
+    uint8_t display[SCREEN_WIDTH * SCREEN_HEIGHT]{}; // Screen for our CHIP8
 
     Chip8();
 

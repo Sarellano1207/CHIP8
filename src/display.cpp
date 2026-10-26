@@ -1,4 +1,5 @@
 #include "display.h"
+#include "raylib.h"
 
 Display::Display(int width, int height, int scale, uint8_t display[]): 
     width(width), 

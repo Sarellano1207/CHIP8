@@ -1,11 +1,17 @@
 #include "chip8.h"
-#include <ctime> 
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <iostream>
 
 Chip8::Chip8() {
     for (unsigned int i = 0; i < FONTSET_SIZE; i++) {
         memory[FONTSET_START_ADDRESS + i] = fonts[i];
     }
     pc = ROM_START_ADDRESS;
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
 }
 
 int Chip8::loadROM(const std::string& path) {
@@ -161,7 +167,7 @@ void Chip8::disassemble(uint16_t opcode, uint16_t addr) {
             std::printf("0x%04X  0x%04X    JP       V0, 0x%03X\n", addr, opcode, nnn);
             break;
         case 0x0C:
-            std::printf("0x%04X  0x%04X    RND      V%X, 0x%03X\n", addr, opcode, x, nnn);
+            std::printf("0x%04X  0x%04X    RND      V%X, 0x%02X\n", addr, opcode, x, kk);
             break;
         case 0x0D:
             std::printf("0x%04X  0x%04X    DRW      V%X, V%X, 0x%02X\n", addr, opcode, x, y, n);
@@ -313,10 +319,12 @@ void Chip8::execute(uint16_t opcode) {
                     V[0xF] = borrow;
                     break;
                 }
-                case 0x7:
+                case 0x7: {
+                    uint8_t borrow = (V[y] >= V[x]) ? 1 : 0;
                     V[x] = V[y] - V[x];
-                    V[0xF] = (V[y] > V[x]) ? 1 : 0;
+                    V[0xF] = borrow;
                     break;
+                }
                 case 0xE: {
                     uint8_t borrow = (V[x] & 0x80) ? 1 : 0;
                     V[x] *= 2;
@@ -345,7 +353,6 @@ void Chip8::execute(uint16_t opcode) {
             pc = nnn + V[0];
             break;
         case 0x0C: {
-            std::srand(static_cast<unsigned int>(std::time(nullptr))); 
             uint16_t random_num = std::rand() % 256; 
             V[x] = kk & random_num;
             break;
@@ -417,12 +424,12 @@ void Chip8::execute(uint16_t opcode) {
                     index += V[x];
                     break;
                 case 0x29:
-                    index = memory[FONTSET_START_ADDRESS + (V[x] * 5)];
+                    index = FONTSET_START_ADDRESS + V[x] * 5;
                     break;
                 case 0x33:
-                    memory[index] = V[x] % 10; 
-                    memory[index + 1] = (V[x] / 10) % 10;
-                    memory[index + 2]  = V[x] / 100;
+                    memory[index]     = V[x] / 100;         // hundreds
+                    memory[index + 1] = (V[x] / 10) % 10;   // tens
+                    memory[index + 2] = V[x] % 10;          // ones
                     break;
                 case 0x55:
                     for (int i = 0; i <= x; i++) {
