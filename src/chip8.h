@@ -64,6 +64,11 @@ public:
 
     void cycle();
 
+    void set_key(uint8_t key, bool pressed);
+
+    void update_timers();
+
+    bool sound_active() const;
 };
 
 #endif

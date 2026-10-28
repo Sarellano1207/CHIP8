@@ -412,7 +412,6 @@ void Chip8::execute(uint16_t opcode) {
                     }
                     if (!found) pc -= 2;             
                         break;
-                    break;
                 }
                 case 0x15:
                     delayTimer = V[x];
@@ -453,4 +452,19 @@ void Chip8::execute(uint16_t opcode) {
 void Chip8::cycle() {
     uint16_t opcode = fetch();
     execute(opcode);
+}
+
+void Chip8::set_key(uint8_t key, bool pressed) {
+    keypad[key] = pressed;
+}
+
+void Chip8::update_timers() {
+    if (delayTimer > 0)
+        delayTimer--;
+    if (soundTimer > 0)
+        soundTimer--;
+}
+
+bool Chip8::sound_active() const {
+    return soundTimer > 0;
 }
